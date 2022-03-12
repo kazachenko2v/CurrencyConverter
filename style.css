@@ -1,0 +1,9 @@
+body {
+    display: flex;
+    gap: 50px;
+}
+
+label {
+    margin-top: 20px;
+    display: block;
+}
