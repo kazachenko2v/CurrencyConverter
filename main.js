@@ -3,6 +3,7 @@ let input = form.number;
 let select = form.select;
 let dateSelect = form.date;
 let resultContainer = document.querySelector('.result-container');
+let days = new Array(14);
 let results;
 
 let currency = ['byn', 'usd', 'eur', 'cny', 'rub'];
@@ -19,8 +20,6 @@ coeff = {
     rub: { eur: 0.0083, usd: 0.0075, byn: 0.0526, cny: 0.0275 }
 };
 
-let days = new Array(14);
-
 function generateDays() {
     let newDay = {}
     for (k in coeff) {
@@ -32,13 +31,23 @@ function generateDays() {
     return newDay;
 }
 
-for (let i = 0; i < days.length; i++) {
-    days[i] = generateDays();
+function daysArrayFill() {
+    for (let i = 1; i < days.length; i++) {
+        days[0] = coeff;
+        days[i] = generateDays();
+    }
 }
 
 function createOptions() {
     for ( let i = 0; i < currency.length; i++) {
         select.appendChild(new Option(currency[i], currency[i]));
+    }
+}
+
+function createDataOptions() {
+    for ( let key of days.keys()) {
+        console.log(key)
+        dateSelect.appendChild(new Option(key, key));
     }
 }
 
@@ -70,39 +79,37 @@ function getFinalNumber(curr) {
     return (input.value * getCoeff()[curr][result.classList[1]]).toFixed(3)
 }
 
+function writeInValues(curr) {
+    for (result of results) {
+        result.innerHTML = getFinalNumber(curr);
+    }
+}
+
 function converter() {
     results = document.querySelectorAll('.result');
     switch(select.value) {
         case currency[0]:   ////////byn
-            for (result of results) {
-                result.innerHTML = getFinalNumber(currency[0]);
-            }
+            writeInValues(currency[0])
             break
         case currency[1]:   ////////usd
-            for (result of results) {
-                result.innerHTML = getFinalNumber(currency[1]);
-            }
+            writeInValues(currency[1])
             break
         case currency[2]:   ////////eur
-            for (result of results) {
-                result.innerHTML = getFinalNumber(currency[2]);
-            }
+            writeInValues(currency[2])
             break
         case currency[3]:   ////////cny
-            for (result of results) {
-                result.innerHTML = getFinalNumber(currency[3]);
-            }
+            writeInValues(currency[3])
             break
         case currency[4]:   ////////rub
-            for (result of results) {
-                result.innerHTML = getFinalNumber(currency[4]);
-            }
+            writeInValues(currency[4])
             break
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    daysArrayFill();
     createOptions();
+    createDataOptions();
     addLabels();
     converter();
 });
