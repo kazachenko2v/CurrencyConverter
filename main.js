@@ -16,10 +16,10 @@ coeff = {
     usd: { byn: 3.3, eur: 0.9, cny: 6.3, rub: 120 },
     eur: { usd: 1.11, byn: 3.667, cny: 7, rub: 133.333 },
     cny: { usd: 0.16, eur: 0.14, byn: 0.52, rub: 19 },
-    rub: { byn: 0.0083, usd: 0.0075, eur: 0.0526, cny: 0.0275 }
+    rub: { eur: 0.0083, usd: 0.0075, byn: 0.0526, cny: 0.0275 }
 };
 
-days = new Array(14);
+let days = new Array(14);
 
 function generateDays() {
     let newDay = {}
@@ -35,8 +35,6 @@ function generateDays() {
 for (let i = 0; i < days.length; i++) {
     days[i] = generateDays();
 }
-
-console.log(days)
 
 function createOptions() {
     for ( let i = 0; i < currency.length; i++) {
@@ -68,38 +66,36 @@ function getCoeff() {
     return newCoeff = (dateSelect.value == 0) ? coeff : days[dateSelect.value];
 }
 
+function getFinalNumber(curr) {
+    return (input.value * getCoeff()[curr][result.classList[1]]).toFixed(3)
+}
+
 function converter() {
     results = document.querySelectorAll('.result');
-    let labelCurrency;
     switch(select.value) {
         case currency[0]:   ////////byn
             for (result of results) {
-                labelCurrency = result.classList[1];
-                result.innerHTML = (input.value * getCoeff()[currency[0]][labelCurrency]).toFixed(3);
+                result.innerHTML = getFinalNumber(currency[0]);
             }
             break
         case currency[1]:   ////////usd
             for (result of results) {
-                labelCurrency = result.classList[1];
-                result.innerHTML = (input.value * getCoeff()[currency[1]][labelCurrency]).toFixed(3);
+                result.innerHTML = getFinalNumber(currency[1]);
             }
             break
         case currency[2]:   ////////eur
             for (result of results) {
-                labelCurrency = result.classList[1];
-                result.innerHTML = (input.value * getCoeff()[currency[2]][labelCurrency]).toFixed(3);
+                result.innerHTML = getFinalNumber(currency[2]);
             }
             break
         case currency[3]:   ////////cny
             for (result of results) {
-                labelCurrency = result.classList[1];
-                result.innerHTML = (input.value * getCoeff()[currency[3]][labelCurrency]).toFixed(3);
+                result.innerHTML = getFinalNumber(currency[3]);
             }
             break
         case currency[4]:   ////////rub
             for (result of results) {
-                labelCurrency = result.classList[1];
-                result.innerHTML = (input.value * getCoeff()[currency[4]][labelCurrency]).toFixed(3);
+                result.innerHTML = getFinalNumber(currency[4]);
             }
             break
     }
@@ -108,7 +104,6 @@ function converter() {
 document.addEventListener('DOMContentLoaded', () => {
     createOptions();
     addLabels();
-    results = document.querySelectorAll('.result');
     converter();
 });
 
